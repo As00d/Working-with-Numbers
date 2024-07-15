@@ -373,3 +373,47 @@ const balanceInBank = 234_56;
 // 1. we can add this in between 2 number only , not like 3._14 , or not in the start nor at the end
 // 2. Also when this data comes in string say 314_23 and we try to convert this string this gives NaN so we should only use where its become difficult to read about the number.
 const PI = 3.1415;
+
+// Lecture - Using and understanding BigInt
+// Numbers are internally stored as 64 bits meaning 64 1 and 0 to store any number say for eg now
+// 00000000010000100000010000001
+// Out of these 64 bits only 53 is used to store a no. rest is to store position of decimal point and sign
+
+console.log(2 ** 53 - 1);
+console.log(Number.MAX_SAFE_INTEGER);
+// for eg
+console.log(2 ** 53 + 7);
+// so the above result is incorrect so if we try to do calculation with no. greater that this then we might lose precision. Also there might be different places where we might need to store a no. larger than this number maybe some id or getting from an api in that case how we would handle ? So we have bigInt
+
+console.log(930498230948373432987137134739824739847n);
+console.log(BigInt(930498230948));
+
+// Operations for big integers
+console.log(10000n + 10000n);
+const numberBigInt = 10038423098403n;
+console.log(numberBigInt);
+console.log(8273920743904830294809324n * 38439247392n);
+
+// Not possible to mix normal number and bigInt numbers
+const huge = 937549328759n;
+const num = 29;
+console.log(huge * BigInt(num));
+
+// Math operation also does not work like this
+// IMP
+// console.log(Math.sqrt(4n));
+
+// script.js:400 Uncaught
+// TypeError: Cannot mix BigInt and other types, use explicit conversions
+//at script.js:400:17
+
+// There are some exceptions also
+// 1. logical operators - it works
+console.log(20n > 21);
+// 2. When concat with string
+console.log(huge + ' Really big');
+
+// Division
+console.log(11n / 4n); // it cuts the decimal part
+
+console.log(11 / 4);
