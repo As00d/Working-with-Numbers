@@ -417,3 +417,31 @@ console.log(huge + ' Really big');
 console.log(11n / 4n); // it cuts the decimal part
 
 console.log(11 / 4);
+
+// Lecture : Dates and Time
+const now = new Date();
+console.log(now);
+
+console.log(new Date('25 dec 2019'));
+console.log(new Date(account1.movementsDates[0]));
+console.log(new Date(2000, 10, 16));
+// kinda weird but month start with index 0 
+
+console.log(new Date(0));
+console.log(new Date(5 *24*60*60*1000));
+
+const future = new Date(2040, 10, 16, 6, 46);
+console.log(future);
+console.log(future.getFullYear());
+console.log(future.getMonth());
+console.log(future.getDate());
+console.log(future.getDay());
+console.log(future.getHours());
+console.log(future.getMinutes());
+console.log(future.toISOString());
+console.log(future.getTime());
+
+// We also have a setter method which basically sets the dates for these for eg
+console.log(future); // will also do corrections going so
+future.setFullYear(2037);
+console.log(future);
