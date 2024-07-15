@@ -337,3 +337,25 @@ console.log((2.56).toFixed(3));
 console.log((2.56).toFixed(1));
 console.log((2.323).toFixed(2));
 // The thing to note in here is that it returns a string instead of an integer
+
+// Lecture - The remainder operator
+console.log(5 % 2);
+console.log(6 % 2);
+// the remainder operator % and it gives the remainder, the divide method gives the quotient this gives remainder. This gives us a very old school question - to check if number is even or odd
+
+const isEven = num => num % 2 === 0;
+
+console.log(isEven(4));
+console.log(isEven(5));
+
+labelBalance.addEventListener('click', function () {
+  [...document.querySelectorAll('.movements__row')].forEach((elem, index) => {
+    if (index % 2 === 0) {
+      elem.style.background = 'cyan';
+    }
+    if(index % 3 === 0) {
+      elem.style.background = 'lightpink';
+    }
+  });
+});
+// every nth time - good to use remainder operator
