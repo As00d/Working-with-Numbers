@@ -353,9 +353,23 @@ labelBalance.addEventListener('click', function () {
     if (index % 2 === 0) {
       elem.style.background = 'cyan';
     }
-    if(index % 3 === 0) {
+    if (index % 3 === 0) {
       elem.style.background = 'lightpink';
     }
   });
 });
 // every nth time - good to use remainder operator
+
+// Lecture - Numeric separator
+// Now what in world is this numeric separator ? So while working with numbers there might be a case where we need to represent a large no. say amount of money ambani has. But due to large no. of zeroes its become really difficult to read this no. so we can take advantage of numerical seperator that is _ , so we can easily read its equivalent to Rs765,348.00 crore which was difficult to read otherwise
+
+const ambaniWorth = 765348_00_000;
+console.log(ambaniWorth);
+
+const balanceInBank = 234_56;
+// means 234 ruppees and 56 paisa
+
+// There are some limitations to where we can put this _ also
+// 1. we can add this in between 2 number only , not like 3._14 , or not in the start nor at the end
+// 2. Also when this data comes in string say 314_23 and we try to convert this string this gives NaN so we should only use where its become difficult to read about the number.
+const PI = 3.1415;
