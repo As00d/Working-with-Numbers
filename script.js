@@ -81,19 +81,25 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
-
+    const displayDate = new Date(acc.movementsDates[i]);
+    const currentMonth = displayDate.getMonth();
+    const currentYear = displayDate.getFullYear();
+    const currentDate = displayDate.getDate();
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
+        <div class="movements__date">${currentDate}/${currentMonth}/${currentYear}</div>
         <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
@@ -142,7 +148,7 @@ createUsernames(accounts);
 
 const updateUI = function (acc) {
   // Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
 
   // Display balance
   calcDisplayBalance(acc);
@@ -177,6 +183,16 @@ btnLogin.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+    const displayCurrentDate = new Date();
+    labelDate.textContent = `${
+      displayCurrentDate.getDate() > 9
+        ? displayCurrentDate.getDate()
+        : '0' + displayCurrentDate.getDate()
+    }/${
+      displayCurrentDate.getMonth() + 1 > 9
+        ? displayCurrentDate.getMonth()
+        : '0' + displayCurrentDate.getMonth()
+    }/${displayCurrentDate.getFullYear()}, ${displayCurrentDate.getHours()}:${displayCurrentDate.getMinutes()}`;
   }
 });
 
@@ -198,6 +214,10 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
+    // update the transfer date 
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiverAcc.movementsDates.push(new Date().toISOString());
+
     // Update UI
     updateUI(currentAccount);
   }
@@ -212,6 +232,7 @@ btnLoan.addEventListener('click', function (e) {
     // Add movement
     currentAccount.movements.push(amount);
 
+     currentAccount.movementsDates.push(new Date().toISOString());
     // Update UI
     updateUI(currentAccount);
   }
@@ -244,7 +265,7 @@ btnClose.addEventListener('click', function (e) {
 let sorted = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 
@@ -425,10 +446,10 @@ console.log(now);
 console.log(new Date('25 dec 2019'));
 console.log(new Date(account1.movementsDates[0]));
 console.log(new Date(2000, 10, 16));
-// kinda weird but month start with index 0 
+// kinda weird but month start with index 0
 
 console.log(new Date(0));
-console.log(new Date(5 *24*60*60*1000));
+console.log(new Date(5 * 24 * 60 * 60 * 1000));
 
 const future = new Date(2040, 10, 16, 6, 46);
 console.log(future);
