@@ -214,7 +214,7 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
-    // update the transfer date 
+    // update the transfer date
     currentAccount.movementsDates.push(new Date().toISOString());
     receiverAcc.movementsDates.push(new Date().toISOString());
 
@@ -232,7 +232,7 @@ btnLoan.addEventListener('click', function (e) {
     // Add movement
     currentAccount.movements.push(amount);
 
-     currentAccount.movementsDates.push(new Date().toISOString());
+    currentAccount.movementsDates.push(new Date().toISOString());
     // Update UI
     updateUI(currentAccount);
   }
@@ -466,3 +466,15 @@ console.log(future.getTime());
 console.log(future); // will also do corrections going so
 future.setFullYear(2037);
 console.log(future);
+
+// Operation with dates
+
+const pastDate = new Date(2012, 10, 14);
+console.log(pastDate);
+// You want to get the date difference ? say after how many days someone logged into your account this date function will return a string but if we try to convert it into number it does return a timestamp and we can then do operations on it
+
+const diffrence = function (lastLogin, currentLogin) {
+  return Math.abs(lastLogin - currentLogin) / (24 * 60 * 60 * 1000);
+};
+
+console.log(diffrence(new Date(2012, 10, 14), new Date(2012, 10, 16)));
