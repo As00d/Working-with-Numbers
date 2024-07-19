@@ -91,15 +91,26 @@ const displayMovements = function (acc, sort = false) {
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const displayDate = new Date(acc.movementsDates[i]);
-    const currentMonth = displayDate.getMonth();
-    const currentYear = displayDate.getFullYear();
-    const currentDate = displayDate.getDate();
+
+    const options = {
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      month: 'numeric',
+      year: 'numeric'
+    };
+    const currentDate = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      options
+    ).format(displayDate);
+
+
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__date">${currentDate}/${currentMonth}/${currentYear}</div>
+        <div class="movements__date">${currentDate}</div>
         <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
@@ -180,19 +191,31 @@ btnLogin.addEventListener('click', function (e) {
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
-
     // Update UI
     updateUI(currentAccount);
-    const displayCurrentDate = new Date();
-    labelDate.textContent = `${
-      displayCurrentDate.getDate() > 9
-        ? displayCurrentDate.getDate()
-        : '0' + displayCurrentDate.getDate()
-    }/${
-      displayCurrentDate.getMonth() + 1 > 9
-        ? displayCurrentDate.getMonth()
-        : '0' + displayCurrentDate.getMonth()
-    }/${displayCurrentDate.getFullYear()}, ${displayCurrentDate.getHours()}:${displayCurrentDate.getMinutes()}`;
+    // const displayCurrentDate = new Date();
+    // labelDate.textContent = `${
+    //   displayCurrentDate.getDate() > 9
+    //     ? displayCurrentDate.getDate()
+    //     : '0' + displayCurrentDate.getDate()
+    // }/${
+    //   displayCurrentDate.getMonth() + 1 > 9
+    //     ? displayCurrentDate.getMonth()
+    //     : '0' + displayCurrentDate.getMonth()
+    // }/${displayCurrentDate.getFullYear()}, ${displayCurrentDate.getHours()}:${displayCurrentDate.getMinutes()}`;
+    // const locale = navigator.language;
+
+    const options = {
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      month: 'numeric',
+      year: 'numeric'
+    };
+    const currentDate = new Date();
+    labelDate.textContent = new Intl.DateTimeFormat(currentAccount.locale, options).format(
+      currentDate
+    );
   }
 });
 
