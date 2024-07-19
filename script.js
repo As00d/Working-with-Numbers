@@ -97,21 +97,24 @@ const displayMovements = function (acc, sort = false) {
       hour: 'numeric',
       minute: 'numeric',
       month: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     };
     const currentDate = new Intl.DateTimeFormat(
       currentAccount.locale,
       options
     ).format(displayDate);
 
-
+    const money = new Intl.NumberFormat(acc.currency, {
+      style: 'currency',
+      currency: acc.currency,
+    }).format(mov);
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
         <div class="movements__date">${currentDate}</div>
-        <div class="movements__value">${mov.toFixed(2)}€</div>
+        <div class="movements__value">${money}</div>
       </div>
     `;
 
@@ -121,19 +124,33 @@ const displayMovements = function (acc, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+  const balance = new Intl.NumberFormat(acc.currency, {
+    style: 'currency',
+    currency: acc.currency,
+  }).format(acc.balance);
+  labelBalance.textContent = `${balance}`;
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+  const inBalance = new Intl.NumberFormat(acc.currency, {
+    style: 'currency',
+    currency: acc.currency,
+  }).format(incomes);
+  labelSumIn.textContent = `${inBalance}`;
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
+  
+  const outBalance = new Intl.NumberFormat(acc.currency, {
+    style: 'currency',
+    currency: acc.currency,
+  }).format(Math.abs(out));
+  
+  labelSumOut.textContent = `${outBalance}`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -143,7 +160,11 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  const interestTotal = new Intl.NumberFormat(acc.currency, {
+    style: 'currency',
+    currency: acc.currency,
+  }).format(interest);
+  labelSumInterest.textContent = `${interestTotal}`;
 };
 
 const createUsernames = function (accs) {
@@ -210,12 +231,13 @@ btnLogin.addEventListener('click', function (e) {
       hour: 'numeric',
       minute: 'numeric',
       month: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     };
     const currentDate = new Date();
-    labelDate.textContent = new Intl.DateTimeFormat(currentAccount.locale, options).format(
-      currentDate
-    );
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      options
+    ).format(currentDate);
   }
 });
 
@@ -501,3 +523,24 @@ const diffrence = function (lastLogin, currentLogin) {
 };
 
 console.log(diffrence(new Date(2012, 10, 14), new Date(2012, 10, 16)));
+
+// Internationalizing numbers
+// for style we have 3 option - unit, style, currency
+let options = {
+  style: 'currency',
+  unit: 'celsius',
+  currency: 'EUR',
+  // useGrouping: false
+};
+const number = 1213334.23;
+console.log('In US ' + new Intl.NumberFormat('en-US', options).format(number));
+console.log(
+  'In Germany ' + new Intl.NumberFormat('de-DE', options).format(number)
+);
+console.log(
+  'In Syria ' + new Intl.NumberFormat('ar-SY', options).format(number)
+);
+console.log(
+  'Browser ' +
+    new Intl.NumberFormat(window.navigator.language, options).format(number)
+);
