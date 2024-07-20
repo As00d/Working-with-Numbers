@@ -189,9 +189,35 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const startTimer = function () {
+  // set time to 5 minutes
+  let time = 600;
+  // convert the seconds to minutes and second
+  let min = String(Math.trunc(time / 60)).padStart(2, '0');
+  let second = String(Math.trunc(time % 60)).padStart(2, '0');
+  labelTimer.textContent = `${min}:${second}`;
+  const timer = setInterval(function () {
+    if (second === 0) {
+      min--;
+      second = 59;
+    } else {
+      second--;
+    }
+    labelTimer.textContent = `${min}:${second}`;
+    time--;
+
+    if (time === 0) {
+      clearInterval(timer);
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = 'Log in to get started';
+    }
+  }, 1000);
+  return timer;
+};
+
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+let currentAccount, isTimer;
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -214,6 +240,11 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginPin.blur();
     // Update UI
     updateUI(currentAccount);
+    if (isTimer) {
+      clearInterval(isTimer);
+    }
+    isTimer = startTimer();
+    console.log(isTimer);
     // const displayCurrentDate = new Date();
     // labelDate.textContent = `${
     //   displayCurrentDate.getDate() > 9
@@ -576,4 +607,6 @@ setInterval(function () {
       second: 'numeric',
     }).format(now)
   );
-}, 1000);
+}, 10000);
+
+// Implementing timer to the project
