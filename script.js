@@ -197,7 +197,7 @@ const startTimer = function () {
   let second = String(Math.trunc(time % 60)).padStart(2, '0');
   labelTimer.textContent = `${min}:${second}`;
   const timer = setInterval(function () {
-    if (second === 0) {
+    if (+second === 0) {
       min--;
       second = 59;
     } else {
