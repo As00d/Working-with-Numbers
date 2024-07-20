@@ -144,12 +144,12 @@ const calcDisplaySummary = function (acc) {
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  
+
   const outBalance = new Intl.NumberFormat(acc.currency, {
     style: 'currency',
     currency: acc.currency,
   }).format(Math.abs(out));
-  
+
   labelSumOut.textContent = `${outBalance}`;
 
   const interest = acc.movements
@@ -275,13 +275,15 @@ btnLoan.addEventListener('click', function (e) {
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      currentAccount.movements.push(amount);
 
-    currentAccount.movementsDates.push(new Date().toISOString());
-    // Update UI
-    updateUI(currentAccount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      // Update UI
+      updateUI(currentAccount);
+    }, 2000);
+    inputLoanAmount.value = '';
   }
-  inputLoanAmount.value = '';
 });
 
 btnClose.addEventListener('click', function (e) {
@@ -544,3 +546,34 @@ console.log(
   'Browser ' +
     new Intl.NumberFormat(window.navigator.language, options).format(number)
 );
+
+// Lecture : Timers in Js setTimeout and setInterval
+
+// setTimeout function is the function which runs the code after sometime
+const ing = ['mushroom', 'capsicum'];
+const timer = setTimeout(
+  (ing1, ing2) =>
+    console.log(`Your pizza has arrived 🍕 with ${ing1} 🍄 and ${ing2} 🫑`),
+  5000,
+  ...ing
+);
+if (ing.includes('garlic')) {
+  clearTimeout(timer);
+}
+console.log('The code execution does not stop by the time');
+// what if in the callback function we needed to pass some arguments so how can we achieve
+
+// Now what i have seen is in setTimeout function we only called the callback function once what if we want to call a function again and again after fixed period of time
+
+// setInterval
+
+setInterval(function () {
+  const now = new Date();
+  console.log(
+    Intl.DateTimeFormat(window.navigator.locale, {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    }).format(now)
+  );
+}, 1000);
